@@ -1,13 +1,23 @@
 import { useMemo, useState } from 'react';
-import MountainCard from '../components/ui/MountainCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import Select from '../components/ui/Select';
+import FeaturedPeak from '../components/ui/FeaturedPeak';
+import RankedRow from '../components/ui/RankedRow';
 import { useMountains } from '../hooks/useMountains';
 
 const SORT_OPTIONS = [
     { value: 'elevation_desc', label: 'Highest first' },
     { value: 'elevation_asc', label: 'Lowest first' },
-    { value: 'name_asc', label: 'Name A-Z' },
+    { value: 'name_asc', label: 'Name A–Z' },
+];
+
+const DIFFICULTY_OPTIONS = [
+    { value: '', label: 'All difficulties' },
+    { value: 'easy', label: 'Easy' },
+    { value: 'moderate', label: 'Moderate' },
+    { value: 'hard', label: 'Hard' },
+    { value: 'technical', label: 'Technical' },
 ];
 
 export default function MountainsPage() {
@@ -23,56 +33,43 @@ export default function MountainsPage() {
 
     const filtered = useMemo(() => {
         let result = mountains;
-        if (region) {
-            result = result.filter((m) => m.region === region);
-        }
-        if (difficulty) {
-            result = result.filter((m) => m.difficulty === difficulty);
-        }
+        if (region) result = result.filter((m) => m.region === region);
+        if (difficulty) result = result.filter((m) => m.difficulty === difficulty);
         const [field, dir] = sort.split('_');
-        result = [...result].sort((a, b) => {
+        return [...result].sort((a, b) => {
             if (field === 'elevation') {
-                return dir === 'desc' ? b.elevation_m - a.elevation_m : a.elevation_m - b.elevation_m;
+                return dir === 'desc'
+                    ? b.elevation_m - a.elevation_m
+                    : a.elevation_m - b.elevation_m;
             }
             return a.name.localeCompare(b.name);
         });
-        return result;
     }, [mountains, region, difficulty, sort]);
 
-    const selectClass =
-        'text-sm border border-mist bg-white text-charcoal px-3 py-1.5 focus:outline-none focus:border-amber';
+    const featured = useMemo(() => {
+        if (!mountains.length) return null;
+        return mountains[Math.floor(Math.random() * mountains.length)];
+    }, [mountains]);
+    const rest = filtered.filter((m) => m.id !== featured?.id);
+    const maxElev = Math.max(...filtered.map((m) => m.elevation_m), 1);
+
+    const regionOptions = [
+        { value: '', label: 'All regions' },
+        ...regions.map((r) => ({ value: r, label: r })),
+    ];
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-10">
-            <h1 className="font-heading text-4xl font-semibold text-charcoal mb-2">Mountains</h1>
-            <p className="text-slate text-sm mb-8">Bosnia and Herzegovina's peaks</p>
-
-            {/* Filters */}
-            <div className="flex flex-wrap gap-3 mb-8">
-                <select value={region} onChange={(e) => setRegion(e.target.value)} className={selectClass}>
-                    <option value="">All regions</option>
-                    {regions.map((r) => (
-                        <option key={r} value={r}>
-                            {r}
-                        </option>
-                    ))}
-                </select>
-
-                <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className={selectClass}>
-                    <option value="">All difficulties</option>
-                    <option value="easy">Easy</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="hard">Hard</option>
-                    <option value="technical">Technical</option>
-                </select>
-
-                <select value={sort} onChange={(e) => setSort(e.target.value)} className={selectClass}>
-                    {SORT_OPTIONS.map((o) => (
-                        <option key={o.value} value={o.value}>
-                            {o.label}
-                        </option>
-                    ))}
-                </select>
+            {/* Header */}
+            <div className="mb-8">
+                <div className="text-[11px] tracking-[0.16em] uppercase text-amber font-medium mb-2.5">
+                    Bosnia &amp; Herzegovina
+                </div>
+                <h1 className="font-heading text-5xl md:text-6xl font-semibold tracking-tight leading-[0.98] text-charcoal">
+                    The country&apos;s peaks,
+                    <br />
+                    <span className="italic text-slate">ranked by height.</span>
+                </h1>
             </div>
 
             {loading && <LoadingSpinner className="py-16" />}
@@ -80,12 +77,48 @@ export default function MountainsPage() {
 
             {!loading && !error && (
                 <>
-                    <p className="text-slate text-xs mb-4">{filtered.length} peaks</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filtered.map((mountain) => (
-                            <MountainCard key={mountain.id} mountain={mountain} />
+                    {featured && <FeaturedPeak mountain={featured} />}
+
+                    {/* Filters bar */}
+                    <div className="flex items-center justify-between gap-4 py-5 flex-wrap">
+                        <div className="flex gap-2.5 items-center flex-wrap">
+                            <Select
+                                value={region}
+                                onChange={setRegion}
+                                width={150}
+                                placeholder="All regions"
+                                options={regionOptions}
+                            />
+                            <Select
+                                value={difficulty}
+                                onChange={setDifficulty}
+                                width={160}
+                                placeholder="All difficulties"
+                                options={DIFFICULTY_OPTIONS}
+                            />
+                        </div>
+                        <div className="flex gap-3 items-center">
+                            <span className="text-[11px] tracking-[0.14em] uppercase text-slate/80">
+                                {filtered.length} peaks
+                            </span>
+                            <Select value={sort} onChange={setSort} width={150} options={SORT_OPTIONS} />
+                        </div>
+                    </div>
+
+                    {/* Ranked list */}
+                    <div className="bg-white border border-mist">
+                        <div className="grid grid-cols-[36px_1.6fr_1fr_1.4fr_110px] items-center gap-4 px-5 py-3 border-b border-mist text-[10px] tracking-[0.16em] uppercase text-slate/70 font-medium">
+                            <div>#</div>
+                            <div>Mountain</div>
+                            <div>Elevation</div>
+                            <div>Relative height</div>
+                            <div className="text-right">Grade</div>
+                        </div>
+                        {rest.map((m, i) => (
+                            <RankedRow key={m.id} mountain={m} rank={i + 2} maxElev={maxElev} />
                         ))}
                     </div>
+
                     {filtered.length === 0 && (
                         <p className="text-slate text-center py-12">No mountains match your filters.</p>
                     )}

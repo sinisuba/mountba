@@ -10,7 +10,7 @@ export default function Layout() {
             </main>
             <footer className="bg-charcoal text-stone/50 text-xs py-4 px-4 text-center">
                 <p>
-                    &copy; {new Date().getFullYear()} mount.ba &mdash; Map tiles by{' '}
+                    &copy; {new Date().getFullYear()} <a href="/">mount.ba</a> - Map tiles by{' '}
                     <a
                         href="https://mapy.com/"
                         target="_blank"
