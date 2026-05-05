@@ -30,7 +30,7 @@ export default function MapInset({ latitude, longitude, name }) {
         >
             <TileLayer
                 url={tileUrl}
-                attribution='&copy; <a href="https://mapy.cz/" target="_blank">Mapy.cz</a>'
+                attribution='&copy; <a href="https://mapy.com/" target="_blank">Mapy.com</a>'
                 maxZoom={18}
             />
             <Marker position={[latitude, longitude]} icon={peakIcon} />

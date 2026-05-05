@@ -12,12 +12,12 @@ export default function Layout() {
                 <p>
                     &copy; {new Date().getFullYear()} mount.ba &mdash; Map tiles by{' '}
                     <a
-                        href="https://mapy.cz/"
+                        href="https://mapy.com/"
                         target="_blank"
                         rel="noreferrer"
                         className="underline hover:text-stone/80"
                     >
-                        Mapy.cz
+                        Mapy.com
                     </a>
                 </p>
             </footer>

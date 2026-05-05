@@ -15,7 +15,7 @@ export default function MapView({ mountains = [], style }) {
         >
             <TileLayer
                 url={tileUrl}
-                attribution='&copy; <a href="https://mapy.cz/" target="_blank">Mapy.cz</a>'
+                attribution='&copy; <a href="https://mapy.com/" target="_blank">Mapy.com</a>'
                 maxZoom={18}
             />
             {mountains.map((mountain) => (
