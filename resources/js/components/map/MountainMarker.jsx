@@ -4,23 +4,24 @@ import { Link } from 'react-router-dom';
 
 const peakIcon = L.divIcon({
     className: '',
-    html: `<svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="14,3 26,24 2,24" fill="#2d5016" stroke="#f5f0e8" stroke-width="1.5"/>
-        <polygon points="14,3 26,24 2,24" fill="none" stroke="#c17f3d" stroke-width="0" class="peak-hover"/>
+    html: `<svg width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+        <line x1="2" y1="2" x2="16" y2="16" stroke="#e02020" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="16" y1="2" x2="2" y2="16" stroke="#e02020" stroke-width="3.5" stroke-linecap="round"/>
     </svg>`,
-    iconSize: [28, 28],
-    iconAnchor: [14, 24],
-    popupAnchor: [0, -26],
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
 });
 
 const peakIconHover = L.divIcon({
     className: '',
-    html: `<svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="14,3 26,24 2,24" fill="#c17f3d" stroke="#f5f0e8" stroke-width="1.5"/>
+    html: `<svg width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+        <line x1="2" y1="2" x2="16" y2="16" stroke="#ff0000" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="16" y1="2" x2="2" y2="16" stroke="#ff0000" stroke-width="3.5" stroke-linecap="round"/>
     </svg>`,
-    iconSize: [28, 28],
-    iconAnchor: [14, 24],
-    popupAnchor: [0, -26],
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
 });
 
 export default function MountainMarker({ mountain }) {
