@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 
-const MAPY_API_KEY = import.meta.env.VITE_MAPY_API_KEY || '';
+const MAPY_API_KEY = import.meta.env.MAPY_API_KEY || '';
 
 const tileUrl = `https://api.mapy.com/v1/maptiles/outdoor/{z}/{x}/{y}?apikey=${MAPY_API_KEY}`;
 

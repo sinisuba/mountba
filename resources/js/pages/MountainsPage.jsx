@@ -16,7 +16,7 @@ const DIFFICULTY_OPTIONS = [
     { value: '', label: 'All difficulties' },
     { value: 'easy', label: 'Easy' },
     { value: 'moderate', label: 'Moderate' },
-    { value: 'hard', label: 'Hard' },
+    { value: 'strenuous', label: 'Strenuous' },
     { value: 'technical', label: 'Technical' },
 ];
 
@@ -62,9 +62,6 @@ export default function MountainsPage() {
         <div className="max-w-6xl mx-auto px-4 py-10">
             {/* Header */}
             <div className="mb-8">
-                <div className="text-[11px] tracking-[0.16em] uppercase text-amber font-medium mb-2.5">
-                    Bosnia &amp; Herzegovina
-                </div>
                 <h1 className="font-heading text-5xl md:text-6xl font-semibold tracking-tight leading-[0.98] text-charcoal">
                     The country&apos;s peaks,
                     <br />

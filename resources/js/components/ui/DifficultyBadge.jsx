@@ -1,7 +1,7 @@
 const difficultyConfig = {
     easy: { label: 'Easy', classes: 'bg-green-100 text-green-800' },
     moderate: { label: 'Moderate', classes: 'bg-yellow-100 text-yellow-800' },
-    hard: { label: 'Hard', classes: 'bg-orange-100 text-orange-800' },
+    strenuous: { label: 'Strenuous', classes: 'bg-orange-100 text-orange-800' },
     technical: { label: 'Technical', classes: 'bg-red-100 text-red-800' },
 };
 
