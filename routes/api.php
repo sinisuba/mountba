@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Api\GpxTrackController;
 use App\Http\Controllers\Api\MountainController;
 use App\Http\Controllers\Api\PhotoController;
+use App\Http\Controllers\Api\RouteController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -13,6 +14,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/mountains/{mountain}', [MountainController::class, 'show']);
     Route::get('/mountains/{mountain}/gpx/{gpxTrack}/download', [GpxTrackController::class, 'download'])
         ->scopeBindings();
+
+    // Public routes
+    Route::get('/routes', [RouteController::class, 'index']);
+    Route::get('/routes/{hikingRoute}', [RouteController::class, 'show']);
 
     // Auth endpoints
     Route::post('/auth/register', Auth\RegisterController::class);
@@ -33,6 +38,9 @@ Route::prefix('v1')->group(function () {
             Route::put('/mountains/{mountain}', [Admin\MountainController::class, 'update']);
             Route::patch('/photos/{photo}/approve', [Admin\PhotoController::class, 'approve']);
             Route::patch('/gpx/{gpxTrack}/approve', [Admin\GpxTrackController::class, 'approve']);
+            Route::get('/routes', [Admin\RouteController::class, 'index']);
+            Route::post('/routes', [Admin\RouteController::class, 'store']);
+            Route::delete('/routes/{hikingRoute}', [Admin\RouteController::class, 'destroy']);
         });
     });
 });

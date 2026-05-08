@@ -18,7 +18,7 @@ class UploadPhotoAction
             'file_path' => $path,
             'caption' => $caption,
             'uploaded_by' => $uploader->id,
-            'is_approved' => false,
+            'is_approved' => $uploader->isAdmin(),
         ]);
     }
 }

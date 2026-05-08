@@ -29,6 +29,9 @@ export default function Navbar() {
                     <NavLink to="/mountains" className={navLinkClass}>
                         Mountains
                     </NavLink>
+                    <NavLink to="/routes" className={navLinkClass}>
+                        Routes
+                    </NavLink>
 
                     {user ? (
                         <>
@@ -74,6 +77,9 @@ export default function Navbar() {
                 <div className="md:hidden bg-charcoal border-t border-white/10 px-4 py-4 flex flex-col gap-4">
                     <NavLink to="/mountains" className={navLinkClass} onClick={() => setMenuOpen(false)}>
                         Mountains
+                    </NavLink>
+                    <NavLink to="/routes" className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                        Routes
                     </NavLink>
                     {user ? (
                         <>
