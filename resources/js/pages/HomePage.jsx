@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MapView from '../components/map/MapView';
 import { useMountains } from '../hooks/useMountains';
 
 export default function HomePage() {
     const { mountains } = useMountains();
+    const [showOverlay, setShowOverlay] = useState(true);
 
     return (
         <div className="relative" style={{ height: 'calc(100vh - 3.5rem)' }}>
@@ -13,23 +15,32 @@ export default function HomePage() {
             </div>
 
             {/* Intro overlay */}
-            <div className="absolute bottom-8 left-4 right-4 sm:left-8 sm:right-auto sm:max-w-sm z-10 pointer-events-none">
-                <div className="bg-charcoal/90 text-stone p-6 backdrop-blur-sm">
-                    <h1 className="font-heading text-2xl font-semibold mb-2 leading-tight">
-                        Bosnia's Mountains
-                    </h1>
-                    <p className="text-stone/70 text-sm leading-relaxed mb-4">
-                        Explore {mountains.length > 0 ? mountains.length : 'the'} peaks of Bosnia and Herzegovina.
-                        Download GPX tracks, browse photos, and plan your next hike.
-                    </p>
-                    <Link
-                        to="/mountains"
-                        className="pointer-events-auto inline-block text-sm font-medium bg-amber text-charcoal px-4 py-2 hover:bg-amber-light transition-colors"
-                    >
-                        View all mountains
-                    </Link>
+            {showOverlay && (
+                <div className="absolute bottom-8 left-4 right-4 sm:left-8 sm:right-auto sm:max-w-sm z-10 pointer-events-none">
+                    <div className="relative bg-charcoal/90 text-stone p-6 backdrop-blur-sm">
+                        <button
+                            onClick={() => setShowOverlay(false)}
+                            className="pointer-events-auto absolute top-3 right-3 text-stone/50 hover:text-stone transition-colors leading-none"
+                            aria-label="Close"
+                        >
+                            ✕
+                        </button>
+                        <h1 className="font-heading text-2xl font-semibold mb-2 leading-tight">
+                            Bosnia's Mountains
+                        </h1>
+                        <p className="text-stone/70 text-sm leading-relaxed mb-4">
+                            Explore {mountains.length > 0 ? mountains.length : 'the'} peaks of Bosnia and Herzegovina.
+                            Download GPX tracks, browse photos, and plan your next hike.
+                        </p>
+                        <Link
+                            to="/mountains"
+                            className="pointer-events-auto inline-block text-sm font-medium bg-amber text-charcoal px-4 py-2 hover:bg-amber-light transition-colors"
+                        >
+                            View all mountains
+                        </Link>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
