@@ -34,7 +34,7 @@ export default function RoutesMap({ activeRoute }) {
             />
             {coordinates && (
                 <>
-                    <Polyline positions={coordinates} color="#c17f3d" weight={3} opacity={0.85} />
+                    <Polyline positions={coordinates} color="#ff0000" weight={3} opacity={0.85} />
                     <FitBounds coordinates={coordinates} />
                 </>
             )}
