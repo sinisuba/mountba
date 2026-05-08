@@ -5,19 +5,8 @@ import { Link } from 'react-router-dom';
 const peakIcon = L.divIcon({
     className: '',
     html: `<svg width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-        <line x1="2" y1="2" x2="16" y2="16" stroke="#e02020" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="16" y1="2" x2="2" y2="16" stroke="#e02020" stroke-width="3.5" stroke-linecap="round"/>
-    </svg>`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
-    popupAnchor: [0, -10],
-});
-
-const peakIconHover = L.divIcon({
-    className: '',
-    html: `<svg width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-        <line x1="2" y1="2" x2="16" y2="16" stroke="#ff0000" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="16" y1="2" x2="2" y2="16" stroke="#ff0000" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="2" y1="2" x2="16" y2="16" stroke="#0091ffff" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="16" y1="2" x2="2" y2="16" stroke="#0091ffff" stroke-width="3.5" stroke-linecap="round"/>
     </svg>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
@@ -30,7 +19,6 @@ export default function MountainMarker({ mountain }) {
             position={[mountain.latitude, mountain.longitude]}
             icon={peakIcon}
             eventHandlers={{
-                mouseover: (e) => e.target.setIcon(peakIconHover),
                 mouseout: (e) => e.target.setIcon(peakIcon),
             }}
         >
