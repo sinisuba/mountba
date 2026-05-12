@@ -39,6 +39,11 @@ class Mountain extends Model
         return $this->hasMany(GpxTrack::class);
     }
 
+    public function hikingRoutes(): HasMany
+    {
+        return $this->hasMany(HikingRoute::class);
+    }
+
     public function photos(): HasMany
     {
         return $this->hasMany(MountainPhoto::class);

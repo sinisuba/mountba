@@ -22,6 +22,7 @@ class MountainController extends Controller
         $mountain->load([
             'photos' => fn ($query) => $query->approved()->with('uploader'),
             'gpxTracks' => fn ($query) => $query->approved()->with('uploader'),
+            'hikingRoutes' => fn ($query) => $query->published(),
         ]);
 
         return MountainDetailResource::make($mountain);

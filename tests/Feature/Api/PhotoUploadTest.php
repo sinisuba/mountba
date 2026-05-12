@@ -16,37 +16,35 @@ beforeEach(function () {
 test('unauthenticated user cannot upload photo', function () {
     $mountain = Mountain::factory()->create(['slug' => 'vlasic']);
 
-    $this->postJson('/api/v1/mountains/vlasic/photos', [
+    $this->postJson('/api/v1/admin/mountains/vlasic/photos', [
         'photo' => UploadedFile::fake()->create('summit.jpg', 100, 'image/jpeg'),
     ])->assertUnauthorized();
 });
 
-test('authenticated user can upload photo', function () {
+test('non-admin user cannot upload photo', function () {
     $user = User::factory()->create();
     $mountain = Mountain::factory()->create(['slug' => 'vlasic']);
 
     $this->actingAs($user)
-        ->postJson('/api/v1/mountains/vlasic/photos', [
+        ->postJson('/api/v1/admin/mountains/vlasic/photos', [
+            'photo' => UploadedFile::fake()->create('summit.jpg', 100, 'image/jpeg'),
+        ])
+        ->assertForbidden();
+});
+
+test('admin can upload photo', function () {
+    $admin = User::factory()->admin()->create();
+    $mountain = Mountain::factory()->create(['slug' => 'vlasic']);
+
+    $this->actingAs($admin)
+        ->postJson('/api/v1/admin/mountains/vlasic/photos', [
             'photo' => UploadedFile::fake()->create('summit.jpg', 100, 'image/jpeg'),
             'caption' => 'View from the top',
         ])
         ->assertSuccessful()
-        ->assertJsonPath('data.is_approved', false)
         ->assertJsonPath('data.caption', 'View from the top');
 
     expect(MountainPhoto::where('mountain_id', $mountain->id)->exists())->toBeTrue();
-});
-
-test('uploaded photo is pending approval', function () {
-    $user = User::factory()->create();
-    $mountain = Mountain::factory()->create(['slug' => 'vlasic']);
-
-    $this->actingAs($user)
-        ->postJson('/api/v1/mountains/vlasic/photos', [
-            'photo' => UploadedFile::fake()->create('summit.jpg', 100, 'image/jpeg'),
-        ])
-        ->assertSuccessful()
-        ->assertJsonPath('data.is_approved', false);
 });
 
 test('admin can approve a photo', function () {

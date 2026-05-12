@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import MapInset from '../components/map/MapInset';
 import DifficultyBadge from '../components/ui/DifficultyBadge';
 import ErrorMessage from '../components/ui/ErrorMessage';
-import GpxDownloadList from '../components/ui/GpxDownloadList';
+import RouteList from '../components/ui/RouteList';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import PhotoGallery from '../components/ui/PhotoGallery';
 import { useMountain } from '../hooks/useMountain';
@@ -66,10 +66,13 @@ export default function MountainDetailPage() {
                     />
                 </section>
 
-                {/* GPX Tracks */}
+                {/* Routes */}
                 <section>
-                    <h2 className="font-heading text-xl font-semibold text-charcoal mb-4">GPX Tracks</h2>
-                    <GpxDownloadList tracks={mountain.gpx_tracks || []} mountainSlug={slug} />
+                    <h2 className="font-heading text-xl font-semibold text-charcoal mb-4">Routes</h2>
+                    <RouteList routes={[
+                        ...(mountain.gpx_tracks || []),
+                        ...(mountain.hiking_routes || []),
+                    ]} />
                 </section>
             </div>
         </div>

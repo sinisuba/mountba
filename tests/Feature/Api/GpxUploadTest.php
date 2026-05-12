@@ -70,17 +70,3 @@ test('admin can approve a GPX track', function () {
 
     expect($track->fresh()->is_approved)->toBeTrue();
 });
-
-test('download returns 404 for unapproved track', function () {
-    $user = User::factory()->create();
-    $mountain = Mountain::factory()->create(['slug' => 'maglic']);
-    $track = GpxTrack::factory()->create([
-        'mountain_id' => $mountain->id,
-        'uploaded_by' => $user->id,
-        'is_approved' => false,
-        'file_path' => 'gpx/test.gpx',
-    ]);
-
-    $this->getJson("/api/v1/mountains/maglic/gpx/{$track->id}/download")
-        ->assertNotFound();
-});

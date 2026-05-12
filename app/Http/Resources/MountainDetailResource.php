@@ -25,6 +25,12 @@ class MountainDetailResource extends JsonResource
             'is_published' => $this->is_published,
             'photos' => MountainPhotoResource::collection($this->whenLoaded('photos')),
             'gpx_tracks' => GpxTrackResource::collection($this->whenLoaded('gpxTracks')),
+            'hiking_routes' => $this->whenLoaded('hikingRoutes', fn () => $this->hikingRoutes->map(fn ($route) => [
+                'id' => $route->id,
+                'title' => $route->name,
+                'distance_km' => $route->distance_km !== null ? (float) $route->distance_km : null,
+                'duration_minutes' => $route->duration_minutes,
+            ])),
         ];
     }
 }

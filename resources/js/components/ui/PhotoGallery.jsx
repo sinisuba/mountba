@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function PhotoGallery({ photos = [], mountainSlug, onUpload }) {
     const { user } = useAuth();
+    const isAdmin = user?.role === 'admin';
     const [lightbox, setLightbox] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState(null);
@@ -54,7 +55,7 @@ export default function PhotoGallery({ photos = [], mountainSlug, onUpload }) {
                 </div>
             )}
 
-            {user && (
+            {isAdmin && (
                 <div className="mt-2">
                     <input
                         type="file"
@@ -71,7 +72,6 @@ export default function PhotoGallery({ photos = [], mountainSlug, onUpload }) {
                         {uploading ? 'Uploading...' : 'Upload photo'}
                     </button>
                     {uploadError && <p className="text-red-600 text-xs mt-1">{uploadError}</p>}
-                    <p className="text-slate text-xs mt-1">Photos are reviewed before appearing publicly.</p>
                 </div>
             )}
 

@@ -12,8 +12,6 @@ Route::prefix('v1')->group(function () {
     // Public mountain routes
     Route::get('/mountains', [MountainController::class, 'index']);
     Route::get('/mountains/{mountain}', [MountainController::class, 'show']);
-    Route::get('/mountains/{mountain}/gpx/{gpxTrack}/download', [GpxTrackController::class, 'download'])
-        ->scopeBindings();
 
     // Public routes
     Route::get('/routes', [RouteController::class, 'index']);
@@ -29,13 +27,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/auth/user', Auth\UserController::class);
 
         // Authenticated uploads
-        Route::post('/mountains/{mountain}/photos', [PhotoController::class, 'store']);
         Route::post('/mountains/{mountain}/gpx', [GpxTrackController::class, 'store']);
 
         // Admin-only routes
         Route::middleware('admin')->prefix('admin')->group(function () {
             Route::post('/mountains', [Admin\MountainController::class, 'store']);
             Route::put('/mountains/{mountain}', [Admin\MountainController::class, 'update']);
+            Route::post('/mountains/{mountain}/photos', [PhotoController::class, 'store']);
             Route::patch('/photos/{photo}/approve', [Admin\PhotoController::class, 'approve']);
             Route::patch('/gpx/{gpxTrack}/approve', [Admin\GpxTrackController::class, 'approve']);
             Route::get('/routes', [Admin\RouteController::class, 'index']);
