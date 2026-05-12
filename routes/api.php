@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Api\GpxTrackController;
 use App\Http\Controllers\Api\MountainController;
+use App\Http\Controllers\Api\PeakController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\RouteController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,8 @@ Route::prefix('v1')->group(function () {
     // Public mountain routes
     Route::get('/mountains', [MountainController::class, 'index']);
     Route::get('/mountains/{mountain}', [MountainController::class, 'show']);
+    Route::get('/mountains/{mountain}/peaks', [PeakController::class, 'index']);
+    Route::get('/mountains/{mountain}/peaks/{peak}', [PeakController::class, 'show']);
 
     // Public routes
     Route::get('/routes', [RouteController::class, 'index']);
@@ -33,6 +36,9 @@ Route::prefix('v1')->group(function () {
         Route::middleware('admin')->prefix('admin')->group(function () {
             Route::post('/mountains', [Admin\MountainController::class, 'store']);
             Route::put('/mountains/{mountain}', [Admin\MountainController::class, 'update']);
+            Route::post('/mountains/{mountain}/peaks', [Admin\PeakController::class, 'store']);
+            Route::put('/peaks/{peak}', [Admin\PeakController::class, 'update']);
+            Route::delete('/peaks/{peak}', [Admin\PeakController::class, 'destroy']);
             Route::post('/mountains/{mountain}/photos', [PhotoController::class, 'store']);
             Route::patch('/photos/{photo}/approve', [Admin\PhotoController::class, 'approve']);
             Route::patch('/gpx/{gpxTrack}/approve', [Admin\GpxTrackController::class, 'approve']);

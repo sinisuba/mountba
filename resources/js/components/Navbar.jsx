@@ -35,6 +35,16 @@ export default function Navbar() {
 
                     {user ? (
                         <>
+                            {user.role === 'admin' && (
+                                <>
+                                    <NavLink to="/admin/peaks" className={navLinkClass}>
+                                        Peaks
+                                    </NavLink>
+                                    <NavLink to="/admin/routes" className={navLinkClass}>
+                                        Admin Routes
+                                    </NavLink>
+                                </>
+                            )}
                             <NavLink to="/profile" className={navLinkClass}>
                                 Profile
                             </NavLink>
@@ -83,6 +93,16 @@ export default function Navbar() {
                     </NavLink>
                     {user ? (
                         <>
+                            {user.role === 'admin' && (
+                                <>
+                                    <NavLink to="/admin/peaks" className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                                        Peaks
+                                    </NavLink>
+                                    <NavLink to="/admin/routes" className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                                        Admin Routes
+                                    </NavLink>
+                                </>
+                            )}
                             <NavLink to="/profile" className={navLinkClass} onClick={() => setMenuOpen(false)}>
                                 Profile
                             </NavLink>

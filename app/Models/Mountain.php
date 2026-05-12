@@ -49,6 +49,11 @@ class Mountain extends Model
         return $this->hasMany(MountainPhoto::class);
     }
 
+    public function peaks(): HasMany
+    {
+        return $this->hasMany(Peak::class)->orderBy('elevation_m', 'desc');
+    }
+
     public function scopePublished(Builder $query): void
     {
         $query->where('is_published', true);

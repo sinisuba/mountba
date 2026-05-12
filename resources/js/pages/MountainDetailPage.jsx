@@ -4,12 +4,12 @@ import DifficultyBadge from '../components/ui/DifficultyBadge';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import RouteList from '../components/ui/RouteList';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
-import PhotoGallery from '../components/ui/PhotoGallery';
+import PeakList from '../components/ui/PeakList';
 import { useMountain } from '../hooks/useMountain';
 
 export default function MountainDetailPage() {
     const { slug } = useParams();
-    const { mountain, loading, error, refetch } = useMountain(slug);
+    const { mountain, loading, error } = useMountain(slug);
 
     if (loading) {
         return <LoadingSpinner className="py-24" />;
@@ -56,14 +56,10 @@ export default function MountainDetailPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                {/* Photos */}
+                {/* Peaks */}
                 <section>
-                    <h2 className="font-heading text-xl font-semibold text-charcoal mb-4">Photos</h2>
-                    <PhotoGallery
-                        photos={mountain.photos || []}
-                        mountainSlug={slug}
-                        onUpload={refetch}
-                    />
+                    <h2 className="font-heading text-xl font-semibold text-charcoal mb-4">Peaks</h2>
+                    <PeakList peaks={mountain.peaks || []} mountainSlug={slug} />
                 </section>
 
                 {/* Routes */}

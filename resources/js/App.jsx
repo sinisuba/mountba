@@ -2,11 +2,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminPeaksPage from './pages/AdminPeaksPage';
 import AdminRoutesPage from './pages/AdminRoutesPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import MountainDetailPage from './pages/MountainDetailPage';
 import MountainsPage from './pages/MountainsPage';
+import PeakDetailPage from './pages/PeakDetailPage';
 import ProfilePage from './pages/ProfilePage';
 import RegisterPage from './pages/RegisterPage';
 import RoutesPage from './pages/RoutesPage';
@@ -20,12 +22,21 @@ export default function App() {
                         <Route index element={<HomePage />} />
                         <Route path="mountains" element={<MountainsPage />} />
                         <Route path="mountains/:slug" element={<MountainDetailPage />} />
+                        <Route path="mountains/:slug/:peakSlug" element={<PeakDetailPage />} />
                         <Route path="routes" element={<RoutesPage />} />
                         <Route
                             path="admin/routes"
                             element={
                                 <ProtectedRoute>
                                     <AdminRoutesPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="admin/peaks"
+                            element={
+                                <ProtectedRoute>
+                                    <AdminPeaksPage />
                                 </ProtectedRoute>
                             }
                         />

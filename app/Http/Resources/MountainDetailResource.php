@@ -24,6 +24,7 @@ class MountainDetailResource extends JsonResource
             'region' => $this->region,
             'is_published' => $this->is_published,
             'photos' => MountainPhotoResource::collection($this->whenLoaded('photos')),
+            'peaks' => PeakResource::collection($this->whenLoaded('peaks')),
             'gpx_tracks' => GpxTrackResource::collection($this->whenLoaded('gpxTracks')),
             'hiking_routes' => $this->whenLoaded('hikingRoutes', fn () => $this->hikingRoutes->map(fn ($route) => [
                 'id' => $route->id,
