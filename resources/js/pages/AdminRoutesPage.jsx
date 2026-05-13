@@ -12,7 +12,7 @@ const emptyForm = {
     description: '',
     distance_km: '',
     duration_minutes: '',
-    is_published: false,
+    is_published: true,
     file: null,
 };
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMountains } from '../api/mountains';
-import { createPeak, deletePeak, getPeaks } from '../api/peaks';
+import { createPeak, deletePeak, getPeaks, updatePeak } from '../api/peaks';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { useAuth } from '../context/AuthContext';
@@ -27,6 +27,9 @@ export default function AdminPeaksPage() {
     const [form, setForm] = useState(emptyForm);
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState(null);
+    const [editingDescriptionId, setEditingDescriptionId] = useState(null);
+    const [editingDescription, setEditingDescription] = useState('');
+    const [savingDescriptionId, setSavingDescriptionId] = useState(null);
 
     useEffect(() => {
         if (user && user.role !== 'admin') {
@@ -86,12 +89,36 @@ export default function AdminPeaksPage() {
         }
     };
 
+    const handleEditDescription = (peak) => {
+        setEditingDescriptionId(peak.id);
+        setEditingDescription(peak.description ?? '');
+    };
+
+    const handleCancelDescription = () => {
+        setEditingDescriptionId(null);
+        setEditingDescription('');
+    };
+
+    const handleSaveDescription = async (peak) => {
+        setSavingDescriptionId(peak.id);
+        try {
+            const res = await updatePeak(peak.slug, { description: editingDescription });
+            setPeaks((prev) => prev.map((p) => (p.id === peak.id ? res.data.data : p)));
+            setEditingDescriptionId(null);
+            setEditingDescription('');
+        } catch {
+            alert('Failed to update description.');
+        } finally {
+            setSavingDescriptionId(null);
+        }
+    };
+
     const handleDelete = async (peak) => {
         if (!window.confirm(`Delete "${peak.name}"? This cannot be undone.`)) {
             return;
         }
         try {
-            await deletePeak(peak.id);
+            await deletePeak(peak.slug);
             setPeaks((prev) => prev.filter((p) => p.id !== peak.id));
         } catch {
             alert('Failed to delete peak.');
@@ -152,28 +179,29 @@ export default function AdminPeaksPage() {
 
                             <div>
                                 <label className="block text-xs tracking-widest uppercase text-slate mb-1.5">
-                                    Elevation (m)
+                                    Elevation (m) *
                                 </label>
                                 <input
                                     type="number"
                                     name="elevation_m"
                                     value={form.elevation_m}
                                     onChange={handleChange}
+                                    required
                                     min="0"
-                                    max="9000"
                                     className="w-full border border-mist px-3 py-2 text-sm text-charcoal focus:outline-none focus:border-amber"
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-xs tracking-widest uppercase text-slate mb-1.5">
-                                    Latitude
+                                    Latitude *
                                 </label>
                                 <input
                                     type="number"
                                     name="latitude"
                                     value={form.latitude}
                                     onChange={handleChange}
+                                    required
                                     step="any"
                                     className="w-full border border-mist px-3 py-2 text-sm text-charcoal focus:outline-none focus:border-amber"
                                 />
@@ -181,13 +209,14 @@ export default function AdminPeaksPage() {
 
                             <div>
                                 <label className="block text-xs tracking-widest uppercase text-slate mb-1.5">
-                                    Longitude
+                                    Longitude *
                                 </label>
                                 <input
                                     type="number"
                                     name="longitude"
                                     value={form.longitude}
                                     onChange={handleChange}
+                                    required
                                     step="any"
                                     className="w-full border border-mist px-3 py-2 text-sm text-charcoal focus:outline-none focus:border-amber"
                                 />
@@ -232,30 +261,70 @@ export default function AdminPeaksPage() {
                             )}
 
                             {peaks.length > 0 && (
-                                <div className="bg-white border border-mist">
-                                    <div className="grid grid-cols-[1.5fr_80px_1fr_60px] items-center gap-3 px-5 py-3 border-b border-mist text-[10px] tracking-[0.16em] uppercase text-slate/70 font-medium">
+                                <div className="bg-white border border-mist divide-y divide-mist">
+                                    <div className="grid grid-cols-[1.5fr_80px_2fr_80px] items-center gap-3 px-5 py-3 text-[10px] tracking-[0.16em] uppercase text-slate/70 font-medium">
                                         <div>Peak</div>
                                         <div>Elevation</div>
-                                        <div>Slug</div>
+                                        <div>Description</div>
                                         <div />
                                     </div>
                                     {peaks.map((peak) => (
-                                        <div
-                                            key={peak.id}
-                                            className="grid grid-cols-[1.5fr_80px_1fr_60px] items-center gap-3 px-5 py-3 border-b border-mist last:border-b-0"
-                                        >
-                                            <div className="text-sm font-medium text-charcoal">{peak.name}</div>
-                                            <div className="text-sm text-slate">
-                                                {peak.elevation_m ? `${peak.elevation_m.toLocaleString()} m` : '—'}
-                                            </div>
-                                            <div className="text-xs text-slate/60 font-mono">{peak.slug}</div>
-                                            <div className="flex justify-end">
-                                                <button
-                                                    onClick={() => handleDelete(peak)}
-                                                    className="text-xs text-slate/60 hover:text-red-600 transition-colors"
-                                                >
-                                                    Delete
-                                                </button>
+                                        <div key={peak.id} className="px-5 py-3">
+                                            <div className="grid grid-cols-[1.5fr_80px_2fr_80px] items-start gap-3">
+                                                <div className="text-sm font-medium text-charcoal">{peak.name}</div>
+                                                <div className="text-sm text-slate">
+                                                    {peak.elevation_m ? `${peak.elevation_m.toLocaleString()} m` : '—'}
+                                                </div>
+                                                <div>
+                                                    {editingDescriptionId === peak.id ? (
+                                                        <div className="flex flex-col gap-2">
+                                                            <textarea
+                                                                value={editingDescription}
+                                                                onChange={(e) => setEditingDescription(e.target.value)}
+                                                                rows={3}
+                                                                className="w-full border border-mist px-2 py-1.5 text-sm text-charcoal focus:outline-none focus:border-amber resize-none"
+                                                            />
+                                                            <div className="flex gap-2">
+                                                                <button
+                                                                    onClick={() => handleSaveDescription(peak)}
+                                                                    disabled={savingDescriptionId === peak.id}
+                                                                    className="text-xs bg-amber text-charcoal font-medium px-3 py-1 hover:bg-amber-light transition-colors disabled:opacity-50"
+                                                                >
+                                                                    {savingDescriptionId === peak.id ? 'Saving…' : 'Save'}
+                                                                </button>
+                                                                <button
+                                                                    onClick={handleCancelDescription}
+                                                                    className="text-xs text-slate/60 hover:text-charcoal transition-colors"
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => handleEditDescription(peak)}
+                                                            className="text-left w-full group"
+                                                        >
+                                                            {peak.description ? (
+                                                                <span className="text-xs text-slate line-clamp-2 group-hover:text-charcoal transition-colors">
+                                                                    {peak.description}
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-xs text-slate/40 italic group-hover:text-slate transition-colors">
+                                                                    Add description…
+                                                                </span>
+                                                            )}
+                                                        </button>
+                                                    )}
+                                                </div>
+                                                <div className="flex justify-end">
+                                                    <button
+                                                        onClick={() => handleDelete(peak)}
+                                                        className="text-xs text-slate/60 hover:text-red-600 transition-colors"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}

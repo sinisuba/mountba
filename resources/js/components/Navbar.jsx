@@ -13,8 +13,7 @@ export default function Navbar() {
     };
 
     const navLinkClass = ({ isActive }) =>
-        `text-sm font-medium tracking-wide transition-colors ${
-            isActive ? 'text-amber' : 'text-stone/70 hover:text-stone'
+        `text-sm font-medium tracking-wide transition-colors ${isActive ? 'text-amber' : 'text-stone/70 hover:text-stone'
         }`;
 
     return (
@@ -41,7 +40,7 @@ export default function Navbar() {
                                         Peaks
                                     </NavLink>
                                     <NavLink to="/admin/routes" className={navLinkClass}>
-                                        Admin Routes
+                                        Routes
                                     </NavLink>
                                 </>
                             )}
@@ -99,7 +98,7 @@ export default function Navbar() {
                                         Peaks
                                     </NavLink>
                                     <NavLink to="/admin/routes" className={navLinkClass} onClick={() => setMenuOpen(false)}>
-                                        Admin Routes
+                                        Routes
                                     </NavLink>
                                 </>
                             )}
