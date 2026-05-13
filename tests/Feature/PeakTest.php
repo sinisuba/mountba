@@ -10,7 +10,7 @@ uses(LazilyRefreshDatabase::class);
 test('public can list peaks for a mountain', function () {
     $mountain = Mountain::factory()->create(['slug' => 'prenj']);
     Peak::factory()->create(['mountain_id' => $mountain->id, 'name' => 'Lupoglav', 'slug' => 'lupoglav', 'elevation_m' => 2101]);
-    Peak::factory()->create(['mountain_id' => $mountain->id, 'name' => 'Zelena Glava', 'slug' => 'zelena-glava', 'elevation_m' => 2103]);
+    Peak::factory()->create(['mountain_id' => $mountain->id, 'name' => 'Zelena glava', 'slug' => 'zelena-glava', 'elevation_m' => 2103]);
 
     $this->getJson('/api/v1/mountains/prenj/peaks')
         ->assertOk()
@@ -101,7 +101,7 @@ test('create peak auto-generates slug from name', function () {
 
     $this->actingAs($admin, 'sanctum')
         ->postJson('/api/v1/admin/mountains/prenj/peaks', [
-            'name' => 'Zelena Glava',
+            'name' => 'Zelena glava',
         ])
         ->assertCreated()
         ->assertJsonPath('data.slug', 'zelena-glava');

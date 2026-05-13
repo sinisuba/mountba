@@ -22,7 +22,7 @@ class PeakSeeder extends Seeder
                 ['name' => 'Bregoč', 'elevation_m' => 2014, 'latitude' => 43.3545664, 'longitude' => 18.5677275, 'description' => 'Najviši vrh masiva Zelengore.'],
             ],
             'prenj' => [
-                ['name' => 'Zelena Glava', 'elevation_m' => 2103, 'latitude' => 43.5496983, 'longitude' => 17.9037764, 'description' => 'Najviši vrh planine Prenj.'],
+                ['name' => 'Zelena glava', 'elevation_m' => 2103, 'latitude' => 43.5496983, 'longitude' => 17.9037764, 'description' => 'Najviši vrh planine Prenj.'],
                 ['name' => 'Lupoglav', 'elevation_m' => 2101, 'latitude' => 43.5510000, 'longitude' => 17.9120000, 'description' => 'Kondiciono jedan od najzahtjevnijih vrhova Prenja, pogotovo u zimskim uslovima. Pristup moguć iz više pravaca.'],
                 ['name' => 'Otiš', 'elevation_m' => 2095, 'latitude' => 43.5460000, 'longitude' => 17.8990000, 'description' => null],
             ],
